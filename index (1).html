@@ -1,0 +1,303 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Ratna Elite - Revolutionizing Sustainable Agriculture</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1500595046743-ddf4d3d753fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .section-padding {
+            padding: 6rem 1rem;
+        }
+        .feature-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f0f4f8);
+        }
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #ffffff;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        /* Light Green and White Color Scheme */
+        :root {
+            --primary: #90ee90; /* Light Green */
+            --secondary: #e6f3e6; /* Very Light Green */
+            --accent: #ffffff; /* White */
+            --text-dark: #1a202c; /* Dark Slate */
+            --text-light: #ffffff; /* White */
+            --bg-light: #f9fafb; /* Off-White */
+        }
+        .bg-primary { background-color: var(--primary); }
+        .text-primary { color: var(--primary); }
+        .bg-secondary { background-color: var(--secondary); }
+        .text-secondary { color: var(--secondary); }
+        .bg-accent { background-color: var(--accent); }
+        .text-accent { color: var(--accent); }
+        .text-dark { color: var(--text-dark); }
+        .text-light { color: var(--text-light); }
+        .bg-light { background-color: var(--bg-light); }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-light smooth-scroll">
+
+    <!-- Header -->
+    <header class="bg-primary text-light sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto flex items-center justify-between py-4 px-6">
+            <div class="text-3xl font-bold tracking-tight">Agro Ratna Elite</div>
+            <div class="space-x-8">
+                <a href="#home" class="nav-link text-lg font-medium hover:text-accent">Home</a>
+                <a href="#background" class="nav-link text-lg font-medium hover:text-accent">Background</a>
+                <a href="#solution" class="nav-link text-lg font-medium hover:text-accent">Solution</a>
+                <a href="#features" class="nav-link text-lg font-medium hover:text-accent">Features</a>
+                <a href="#acknowledgments" class="nav-link text-lg font-medium hover:text-accent">Acknowledgments</a>
+                <a href="#contact" class="nav-link text-lg font-medium hover:text-accent">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg text-light text-center section-padding">
+        <div class="container mx-auto animate-fade-in">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Agro Ratna Elite</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Revolutionizing agriculture with AI-powered robotics for sustainable, efficient, and high-yield farming.</p>
+            <a href="#features" class="cta-button bg-primary text-light py-3 px-8 rounded-full text-lg font-semibold hover:bg-accent hover:text-dark">Discover Features</a>
+        </div>
+    </section>
+
+    <!-- Background Section -->
+    <section id="background" class="bg-accent section-padding">
+        <div class="container mx-auto animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8 text-center">The Future of Farming</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-dark mb-4">With the global population projected to reach <strong>9.7 billion by 2050</strong> (UN report), the demand for food is soaring. In India, agriculture's GDP contribution has fallen from 35% in 1990-91 to 15% recently (The Economic Times). Advanced technology is the key to revitalizing this vital sector.</p>
+                    <p class="text-dark">Agro Ratna Elite harnesses cutting-edge innovations to deliver sustainable, efficient, and productive farming solutions.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-primary mb-4">Why Technology Matters</h3>
+                    <ul class="list-disc list-inside text-dark space-y-2">
+                        <li>Advanced machinery enhances scale, speed, and productivity.</li>
+                        <li>Improved seeds, irrigation, and fertilizers boost crop yields.</li>
+                        <li>Smart technologies like robots and sensors promote eco-friendly farming.</li>
+                        <li>Digital systems reduce food waste and optimize supply chains.</li>
+                        <li>Genetic engineering enhances pest resistance and productivity.</li>
+                        <li>Mechanization minimizes manual labor while maximizing efficiency.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="bg-secondary section-padding">
+        <div class="container mx-auto animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8 text-center">Our Solution</h2>
+            <p class="text-dark mb-8 text-center max-w-3xl mx-auto">Agro Ratna Elite is an AI-powered, multi-task agricultural robot designed to tackle modern farming challenges with innovative, sustainable solutions.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Autonomous Farming</h3>
+                    <p class="text-dark">Seamless, fully autonomous farm management for maximum efficiency.</p>
+                </div>
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Smart Irrigation</h3>
+                    <p class="text-dark">Automated watering based on real-time soil moisture data.</p>
+                </div>
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Crop Protection</h3>
+                    <p class="text-dark">AI-driven detection of animals with alerts and deterrents.</p>
+                </div>
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Soil Analysis</h3>
+                    <p class="text-dark">NPK sensors provide precise fertilizer recommendations.</p>
+                </div>
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Disease Detection</h3>
+                    <p class="text-dark">AI-powered cameras for early identification of crop diseases.</p>
+                </div>
+                <div class="feature-card bg-accent p-6 shadow-lg">
+                    <h3 class="text-xl font-semibold text-primary mb-3">Solar-Powered</h3>
+                    <p class="text-dark">Eco-friendly operations powered by renewable solar energy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section id="introduction" class="bg-accent section-padding">
+        <div class="container mx-auto text-center animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8">About Agro Ratna Elite</h2>
+            <p class="text-dark max-w-3xl mx-auto text-lg">Crafted in the Atal Lab and dedicated to the visionary industrialist, Late Mr. Ratan Tata, <strong>Agro Ratna Elite</strong> empowers farmers with innovative technology to ensure sustainable and efficient agriculture for a thriving future.</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="bg-secondary section-padding">
+        <div class="container mx-auto animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8 text-center">Key Features</h2>
+            <div class="space-y-8">
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">1</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Automated Ploughing</h3>
+                        <p class="text-dark">Precision ploughing powered by a Servo Motor and Arduino Uno, triggered by smart commands.</p>
+                    </div>
+                </div>
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">2</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Seed Sowing</h3>
+                        <p class="text-dark">Automated seed sowing with a custom-designed bottle system and Servo Motor for accuracy.</p>
+                    </div>
+                </div>
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">3</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Smart Irrigation</h3>
+                        <p class="text-dark">Real-time soil moisture monitoring with sensors and Arduino Uno for efficient water delivery.</p>
+                    </div>
+                </div>
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">4</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Weed Removal</h3>
+                        <p class="text-dark">Machine Learning-driven weed detection and removal, controlled by Arduino Uno.</p>
+                    </div>
+                </div>
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">5</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Animal Detection</h3>
+                        <p class="text-dark">AI system detects animals, sends alerts, and activates a buzzer to protect crops.</p>
+                    </div>
+                </div>
+                <div class="feature-card bg-accent p-8 flex items-start space-x-4">
+                    <div class="text-primary text-3xl font-bold">6</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-primary mb-2">Thief Detection</h3>
+                        <p class="text-dark">Under development: Detects unauthorized persons for enhanced field security.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acknowledgments Section -->
+    <section id="acknowledgments" class="bg-accent section-padding">
+        <div class="container mx-auto animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8 text-center">Acknowledgments</h2>
+            <p class="text-dark max-w-3xl mx-auto text-lg text-center mb-6">We extend our heartfelt gratitude to the individuals whose dedication and contributions have been pivotal in bringing Agro Ratna Elite to life:</p>
+            <ul class="list-disc list-inside text-dark max-w-3xl mx-auto space-y-2">
+                <li><strong>Syed Daniyal</strong>: Founder and team leader of Agro Ratna Elite, whose tireless efforts in coding and designing have transformed the project into a market-ready product.</li>
+                <li><strong>Amaan</strong>: Co-leader of Agro Ratna Elite, who has worked diligently on the project, contributing significantly to the design and creation of the logo.</li>
+                <li><strong>Mr. Shafat Majeed Lone</strong>: Co-founder of Agro Ratna Elite, who provided invaluable support to Daniyal and Amaan in coding and designing the robot.</li>
+                <li><strong>Skuast-k</strong>: we would like to thank <strong>Skuast-k</strong> espacially <strong> Hon'ble vice chancellor </strong>, Directrate of Extention <strong> Dr Rehana
+                </strong>,CEO of discovery building <strong> Dr Naveed </strong>   ,<strong>Abdul Rouf Sir</strong>, head of cameil <strong> Mr Showkat Rasool</strong> and the instructors of fab lab <strong> (Haris sir ,aquib sir, tariq sir and irshad sir)</strong> </li>
+            </ul>
+            <p class="text-dark max-w-3xl mx-auto text-lg text-center mt-6">Together, we are building a sustainable future for agriculture, and we are deeply grateful for the collective efforts that make Agro Ratna Elite possible.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-accent section-padding">
+        <div class="container mx-auto text-center animate-fade-in">
+            <h2 class="text-4xl font-bold text-primary mb-8">Connect With Us</h2>
+            <p class="text-dark max-w-3xl mx-auto mb-8 text-lg">Transform your farming operations with Agro Ratna Elite. Contact us to learn more or explore collaboration opportunities!</p>
+            <a href="mailto:info@agroratnaelite.com" class="cta-button bg-primary text-light py-3 px-8 rounded-full text-lg font-semibold hover:bg-accent hover:text-dark">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-light text-center py-6">
+        <div class="container mx-auto">
+            <p class="text-sm">&copy; 2025 Agro Ratna Elite. All rights reserved.</p>
+            <p class="text-sm mt-2">Developed in the Atal Lab, dedicated to Late Mr. Ratan Tata.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
